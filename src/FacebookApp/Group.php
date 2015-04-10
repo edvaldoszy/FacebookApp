@@ -4,8 +4,19 @@ namespace FacebookApp;
 
 class Group extends Feed
 {
+    /**
+     * @var string $id
+     */
     private $id;
+
+    /**
+     * @var string $name
+     */
     private $name;
+
+    /**
+     * @var boolean $admin
+     */
     private $admin;
 
     public function __construct($id = null)
@@ -14,7 +25,7 @@ class Group extends Feed
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -53,21 +64,5 @@ class Group extends Feed
     public function isAdmin()
     {
         return (bool) $this->admin;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getAdmin()
-    {
-        return $this->admin;
-    }
-
-    /**
-     * @param bool $admin
-     */
-    public function setAdmin($admin)
-    {
-        $this->admin = $admin;
     }
 }

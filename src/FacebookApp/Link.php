@@ -39,6 +39,10 @@ class Link
         $this->url = $url;
     }
 
+    /**
+     * Magic method __toString returns the URL
+     * @return string
+     */
     public function __toString()
     {
         return $this->url;

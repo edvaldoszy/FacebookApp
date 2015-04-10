@@ -93,7 +93,7 @@ class Post
     /**
      * @param SplObjectStorage $tags
      */
-    public function setTags($tags)
+    public function setTags(SplObjectStorage $tags)
     {
         $this->tags = $tags;
     }

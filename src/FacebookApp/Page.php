@@ -2,11 +2,28 @@
 
 namespace FacebookApp;
 
+use Exception;
+
 class Page extends Feed
 {
+    /**
+     * @var string $id
+     */
     private $id;
+
+    /**
+     * @var string $name
+     */
     private $name;
+
+    /**
+     * @var String $category
+     */
     private $category;
+
+    /**
+     * @var string $accessToken
+     */
     private $accessToken;
 
     public function __construct($id = null)
@@ -15,7 +32,7 @@ class Page extends Feed
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -23,7 +40,7 @@ class Page extends Feed
     }
 
     /**
-     * @param mixed $id
+     * @param string $id
      */
     public function setId($id)
     {
@@ -31,7 +48,7 @@ class Page extends Feed
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -39,7 +56,7 @@ class Page extends Feed
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -47,7 +64,7 @@ class Page extends Feed
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCategory()
     {
@@ -55,7 +72,7 @@ class Page extends Feed
     }
 
     /**
-     * @param mixed $category
+     * @param string $category
      */
     public function setCategory($category)
     {
@@ -63,7 +80,7 @@ class Page extends Feed
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getAccessToken()
     {
@@ -71,7 +88,7 @@ class Page extends Feed
     }
 
     /**
-     * @param mixed $accessToken
+     * @param string $accessToken
      */
     public function setAccessToken($accessToken)
     {
