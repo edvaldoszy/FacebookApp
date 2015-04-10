@@ -7,21 +7,29 @@ abstract class Feed
     /**
      * @var FacebookApp
      */
-    private $app;
+    protected $app;
 
     /**
      * Publish a Post in feed
      *
      * @param Post $post
+     *
+     * @throws Exception
+     * 
      * @return Post
      */
-    public function publish(Post $post) {}
+    public function publish(Post $post) {
+        if (!$this->app instanceof FacebookApp)
+            throw new Exception("You must have an instance of FacebookApp");
+
+        return $this->app->publish($this, $post);
+    }
 
     /**
      * Return the ID to post in feed
      * @return string
      */
-    public function getId() {}
+    abstract public function getId();
 
     /**
      * @return FacebookApp
