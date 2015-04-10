@@ -35,6 +35,18 @@ class Post
     }
 
     /**
+     * Tag a new Profile
+     * @param Profile $profile
+     */
+    public function addTag(Profile $profile)
+    {
+        if (!$this->tags instanceof SplObjectStorage)
+            $this->tags = new SplObjectStorage();
+
+        $this->tags->attach($profile);
+    }
+
+    /**
      * @return string
      */
     public function getId()
