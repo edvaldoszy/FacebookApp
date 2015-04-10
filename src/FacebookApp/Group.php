@@ -19,9 +19,16 @@ class Group extends Feed
      */
     private $admin;
 
-    public function __construct($id = null)
+    /**
+     * @param string $id
+     * @param string $name
+     * @param string $admin
+     */
+    public function __construct($id, $name, $admin)
     {
-        if ($id) $this->id = $id;
+        $this->id = $id;
+        $this->name = $name;
+        $this->admin = $admin;
     }
 
     /**

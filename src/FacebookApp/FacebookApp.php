@@ -148,10 +148,12 @@ class FacebookApp
         $out = new SplObjectStorage();
 
         foreach ($list as $data) {
-            $group = new Group($data->getProperty("id"));
+            $group = new Group(
+                $data->getProperty("id"),
+                $data->getProperty("name"),
+                (bool) $data->getProperty("administrator")
+            );
             $group->setApp($this);
-            $group->setName($data->getProperty("name"));
-            $group->setAdmin((bool) $data->getProperty("administrator"));
             $out->attach($group);
         }
         return $out;
