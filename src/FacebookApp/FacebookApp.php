@@ -7,6 +7,7 @@ use Facebook\FacebookRequest;
 use Facebook\FacebookSession;
 use Facebook\FacebookSDKException;
 
+use Facebook\GraphUser;
 use Facebook\GraphUserPage;
 use SplObjectStorage;
 
@@ -54,6 +55,7 @@ class FacebookApp
      * @param string $method
      * @param string $path
      * @param array|null $params
+     *
      * @return \Facebook\GraphObject
      *
      * @throws \Facebook\FacebookRequestException
@@ -133,6 +135,21 @@ class FacebookApp
         $graph = $this->sendRequest("POST", "/{$target->getId()}/feed", $params);
         $post->setId($graph->getProperty("id"));
         return $post;
+    }
+
+    /**
+     * Retrieve user's profile
+     *
+     * @return Profile
+     */
+    public function getProfile()
+    {
+        $graph = $this->sendRequest("GET", "/me")->cast(GraphUser::className());
+        $profile = new Profile($graph->getProperty("id"));
+        $profile->setName($graph->getProperty("name"));
+        $profile->setLink($graph->getProperty("link"));
+        $profile->setLocale($graph->getProperty("locale"));
+        return $profile;
     }
 
     /**
