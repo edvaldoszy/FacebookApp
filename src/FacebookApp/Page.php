@@ -32,6 +32,25 @@ class Page extends Feed
     }
 
     /**
+     * Publish a Post in feed
+     *
+     * @param Post $post
+     *
+     * @throws Exception
+     *
+     * @return Post
+     */
+    public function publish(Post $post)
+    {
+        if (!$this->app instanceof FacebookApp)
+            throw new Exception("You must have an instance of FacebookApp");
+
+        $param = array("access_token" => $this->accessToken);
+
+        return $this->app->publish($this, $post, $param);
+    }
+
+    /**
      * @return string
      */
     public function getId()
