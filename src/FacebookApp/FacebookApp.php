@@ -119,7 +119,7 @@ class FacebookApp
      *
      * @return Post
      */
-    public function publish(Feed $target, Post $post, Array $params = array())
+    public function publish(Feed $target, Post $post, Array $params = null)
     {
         $params["message"] = $post->getMessage();
 
