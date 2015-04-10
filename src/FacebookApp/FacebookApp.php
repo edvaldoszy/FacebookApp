@@ -113,14 +113,13 @@ class FacebookApp
      *
      * @param Feed $target
      * @param Post $post
+     * @param array $params
      *
      * @return Post
      */
-    public function publish(Feed $target, Post $post)
+    public function publish(Feed $target, Post $post, Array $params = array())
     {
-        $params = array(
-            "message" => $post->getMessage()
-        );
+        $params["message"] = $post->getMessage();
 
         if ($post->getLink() instanceof Link) {
             $link = $post->getLink();
@@ -150,6 +149,7 @@ class FacebookApp
 
         foreach ($list as $data) {
             $group = new Group($data->getProperty("id"));
+            $group->setApp($this);
             $group->setName($data->getProperty("name"));
             $group->setAdmin((bool) $data->getProperty("administrator"));
             $out->attach($group);
@@ -171,6 +171,7 @@ class FacebookApp
 
         foreach ($list as $data) {
             $page = new Page($data->getProperty("id"));
+            $page->setApp($this);
             $page->setName($data->getProperty("name"));
             $page->setCategory($data->getProperty("category"));
             $page->setAccessToken($data->getProperty("access_token"));
