@@ -59,7 +59,7 @@ class Profile extends Feed
 
     /**
      * Returns user's group
-     * 
+     *
      * @return SplObjectStorage
      * @throws Exception
      */

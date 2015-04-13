@@ -10,7 +10,8 @@
 require_once "../vendor/autoload.php";
 
 use FacebookApp\FacebookApp;
-use FacebookApp\Profile;
+use FacebookApp\Post;
+use FacebookApp\Link;
 
 session_start();
 $token = isset($_SESSION["token"]) ? $_SESSION["token"] : null;
@@ -20,10 +21,12 @@ if (!$app->checkAccess($token)) {
     exit("<a href=\"{$app->getLoginUrl()}\">Fazer login com Facebook</a>");
 }
 
-$post = new Post("Testando aplicativo do Facebook");
-$post->addTag(new Profile("friend ID"));
-$post->addTag(new Profile("friend ID"));
-$post->setPlace("Page location ID");
-
 $profile = $app->getProfile();
-$profile->publish($post);
+$groups = $profile->getGroups();
+
+$post = new Post("Testando aplicativo do Facebook");
+$post->setLink(new Link("http://www.edvaldotsi.com/"));
+
+foreach ($groups as $group) {
+    $group->publis($post);
+}
