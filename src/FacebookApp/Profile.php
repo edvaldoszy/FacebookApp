@@ -58,6 +58,20 @@ class Profile extends Feed
     }
 
     /**
+     * Returns user's group
+     * 
+     * @return SplObjectStorage
+     * @throws Exception
+     */
+    public function getGroups()
+    {
+        if (!$this->app instanceof FacebookApp)
+            throw new Exception("You must have an instance of FacebookApp");
+
+        return $this->app->getGroups($this);
+    }
+
+    /**
      * @return string
      */
     public function getId()
