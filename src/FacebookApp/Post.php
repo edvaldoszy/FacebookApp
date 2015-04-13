@@ -1,4 +1,11 @@
 <?php
+/**
+ * Created by Edvaldo Szymonek
+ * User: edvaldo
+ * Date: 13/04/2015
+ * Time: 09:46
+ * Website: http://edvaldotsi.com
+ */
 
 namespace FacebookApp;
 
@@ -24,6 +31,12 @@ class Post
     private $link;
 
     /**
+     * Page ID of a location associated with this post
+     * @var string $place
+     */
+    private $place;
+
+    /**
      * People target in the post
      * @var SplObjectStorage $tags
      */
@@ -32,18 +45,6 @@ class Post
     public function __construct($message = null)
     {
         if ($message) $this->message = $message;
-    }
-
-    /**
-     * Tag a new Profile
-     * @param Profile $profile
-     */
-    public function addTag(Profile $profile)
-    {
-        if (!$this->tags instanceof SplObjectStorage)
-            $this->tags = new SplObjectStorage();
-
-        $this->tags->attach($profile);
     }
 
     /**
@@ -95,11 +96,56 @@ class Post
     }
 
     /**
+     * @return string
+     */
+    public function getPlace()
+    {
+        return $this->place;
+    }
+
+    /**
+     * @param string $place
+     */
+    public function setPlace($place)
+    {
+        $this->place = $place;
+    }
+
+    /**
      * @return SplObjectStorage
      */
     public function getTags()
     {
         return $this->tags;
+    }
+
+    /**
+     * Returns an array of IDs tagged in post
+     *
+     * @return null|string
+     */
+    public function getTagsAsString()
+    {
+        if ($this->tags instanceof SplObjectStorage) {
+            $out = array();
+            foreach ($this->tags as $tag) {
+                $out[] = $tag->getId();
+            }
+            return implode(",", $out);
+        }
+        return null;
+    }
+
+    /**
+     * Tag a new Profile
+     * @param Profile $profile
+     */
+    public function addTag(Profile $profile)
+    {
+        if (!$this->tags instanceof SplObjectStorage)
+            $this->tags = new SplObjectStorage();
+
+        $this->tags->attach($profile);
     }
 
     /**

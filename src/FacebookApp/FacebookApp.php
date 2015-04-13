@@ -1,52 +1,40 @@
 <?php
+/**
+ * Created by Edvaldo Szymonek
+ * User: edvaldo
+ * Date: 13/04/2015
+ * Time: 09:46
+ * Website: http://edvaldotsi.com
+ */
 
 namespace FacebookApp;
 
+use Exception;
 use Facebook\FacebookRedirectLoginHelper;
 use Facebook\FacebookRequest;
 use Facebook\FacebookSession;
 use Facebook\FacebookSDKException;
 
 use Facebook\GraphUser;
-use Facebook\GraphUserPage;
 use SplObjectStorage;
 
 class FacebookApp
 {
     /**
-     * Your Facebook App ID
+     * Your Facebook App configuration
+     * @var array $config
      */
-    const APP_ID = "433974716778616";
-
-    /**
-     * Your Facebook App Secret
-     */
-    const APP_SECRET = "124f17ab103b3af0b041db138ed02dce";
-
-    /**
-     * Redirect URI after login
-     */
-    const REDIRECT_URL = "http://facebook-app.localhost/logado.php";
-
-    /**
-     * Your app scope
-     *
-     * @var array $scope
-     */
-    private $scope = array(
-        "publish_actions",
-        "manage_pages",
-        "user_groups"
-    );
+    private $config;
 
     /**
      * @var \Facebook\FacebookSession
      */
     private $session;
 
-    public function __construct()
+    public function __construct($config)
     {
-        FacebookSession::setDefaultApplication(self::APP_ID, self::APP_SECRET);
+        $this->config = $config;
+        FacebookSession::setDefaultApplication($this->config["app_id"], $this->config["app_secret"]);
     }
 
     /**
@@ -91,8 +79,8 @@ class FacebookApp
      */
     public function getLoginUrl()
     {
-        $helper = new FacebookRedirectLoginHelper(self::REDIRECT_URL);
-        return $helper->getLoginUrl($this->scope);
+        $helper = new FacebookRedirectLoginHelper($this->config["redirect_url"]);
+        return $helper->getLoginUrl($this->config["scope"]);
     }
 
     /**
@@ -102,7 +90,7 @@ class FacebookApp
      */
     public function getAccessToken()
     {
-        $helper = new FacebookRedirectLoginHelper(self::REDIRECT_URL);
+        $helper = new FacebookRedirectLoginHelper($this->config["redirect_url"]);
         $session = $helper->getSessionFromRedirect();
         if ($session) {
             return (string) $session->getAccessToken();
@@ -116,6 +104,8 @@ class FacebookApp
      * @param Feed $target
      * @param Post $post
      * @param array $params
+     *
+     * @throws Exception
      *
      * @return Post
      */
@@ -131,6 +121,14 @@ class FacebookApp
             $params["caption"] = $link->getCaption();
             $params["description"] = $link->getDescription();
         }
+
+        if ($post->getTags() instanceof SplObjectStorage)
+            if (empty($post->getPlace())) {
+                throw new Exception("You must set an page ID of a location associated with this post");
+            } else {
+                $params["place"] = $post->getPlace();
+                $params["tags"] = $post->getTagsAsString();
+            }
 
         $graph = $this->sendRequest("POST", "/{$target->getId()}/feed", $params);
         $post->setId($graph->getProperty("id"));
@@ -149,6 +147,7 @@ class FacebookApp
         $profile->setName($graph->getProperty("name"));
         $profile->setLink($graph->getProperty("link"));
         $profile->setLocale($graph->getProperty("locale"));
+        $profile->setApp($this);
         return $profile;
     }
 
@@ -190,10 +189,10 @@ class FacebookApp
 
         foreach ($list as $data) {
             $page = new Page($data->getProperty("id"));
-            $page->setApp($this);
             $page->setName($data->getProperty("name"));
             $page->setCategory($data->getProperty("category"));
             $page->setAccessToken($data->getProperty("access_token"));
+            $page->setApp($this);
             $out->attach($page);
         }
         return $out;

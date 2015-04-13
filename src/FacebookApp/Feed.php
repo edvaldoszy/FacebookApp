@@ -1,4 +1,11 @@
 <?php
+/**
+ * Created by Edvaldo Szymonek
+ * User: edvaldo
+ * Date: 13/04/2015
+ * Time: 09:46
+ * Website: http://edvaldotsi.com
+ */
 
 namespace FacebookApp;
 
