@@ -9,6 +9,8 @@
 
 namespace FacebookApp;
 
+use SplObjectStorage;
+
 class Profile extends Feed
 {
     /**
@@ -39,6 +41,20 @@ class Profile extends Feed
     public function __construct($id = "me")
     {
         $this->id = $id;
+    }
+
+    /**
+     * Returns user's page
+     *
+     * @return SplObjectStorage
+     * @throws Exception
+     */
+    public function getPages()
+    {
+        if (!$this->app instanceof FacebookApp)
+            throw new Exception("You must have an instance of FacebookApp");
+
+        return $this->app->getPages($this);
     }
 
     /**
